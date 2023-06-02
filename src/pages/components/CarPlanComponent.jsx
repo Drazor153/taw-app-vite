@@ -83,20 +83,20 @@ export default function CarPlanComponent({ setCarreraExt, setPlanExt, actionInfo
         <div className="sel">
           <label>Carrera:</label>
           <select value={carreraInt.value} onChange={carreraHandle}>
-            {carreras.map((val, i) => (
-              <option key={i} value={val.codigo}>
-                {val.nombre}
+            {carreras.map((carrera) => (
+              <option key={carrera.codigo} value={carrera.codigo}>
+                {carrera.nombre}
               </option>
             ))}
           </select>
         </div>
         <div className="sel">
           <label>Plan:</label>
-          <select value={planInt} onChange={planHandle}>
+          <select value={planInt} onChange={planHandle} disabled={carreraInt.value <= 0}>
             <option value={0}>Escoja el plan de la carrera</option>
-            {planesSelector.planes.map((val, i) => (
-              <option key={i} value={val.anio}>
-                {val.anio}
+            {planesSelector.planes.map((plan) => (
+              <option key={plan.anio} value={plan.anio}>
+                {plan.anio}
               </option>
             ))}
           </select>
