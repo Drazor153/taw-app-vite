@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import RamosContainer from "./RamosContainer";
 
 export default function HorarioDispoSala({ ramosExt }) {
-  let n_bloques = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  // let n_bloques = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const [horario, setHorario] = useState(null);
+
+  const resetHorario = () => {
+    setHorario(null);
+  };
 
   const cargarHorarioSala = async (depa, sala) => {
     const response = await fetch(
-      import.meta.env.VITE_API_URL +
-        "sala?" +
+      `${import.meta.env.VITE_API_URL}sala?` +
         new URLSearchParams({
           depa,
           sala,
@@ -15,7 +19,7 @@ export default function HorarioDispoSala({ ramosExt }) {
     );
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
+      setHorario(data);
     }
   };
 
@@ -23,72 +27,14 @@ export default function HorarioDispoSala({ ramosExt }) {
     <div id="asignacionP">
       <RamosContainer ramosExt={ramosExt} />
       <div id="asignacionSec">
-        <UbiSelectors handler={cargarHorarioSala} />
-        <div className="asignacionTable">
-          <table>
-            <thead style={{ backgroundColor: "#9FC5F8", borderColor: "black" }}>
-              <tr>
-                <td>Lunes</td>
-                <td>Martes</td>
-                <td>Miercoles</td>
-                <td>Jueves</td>
-                <td>Viernes</td>
-              </tr>
-            </thead>
-            <tbody>
-              {n_bloques.map((blo) => (
-                <tr key={blo}>
-                  <BloqueDispoSala key={blo} id={blo} nombre={blo} />
-                  <BloqueDispoSala
-                    key={blo + 14}
-                    id={blo + 14}
-                    nombre={blo + 14}
-                  />
-                  <BloqueDispoSala
-                    key={blo + 14 * 2}
-                    id={blo + 14 * 2}
-                    nombre={blo + 14 * 2}
-                  />
-                  <BloqueDispoSala
-                    key={blo + 14 * 3}
-                    id={blo + 14 * 3}
-                    nombre={blo + 14 * 3}
-                  />
-                  <BloqueDispoSala
-                    key={blo + 14 * 4}
-                    id={blo + 14 * 4}
-                    nombre={blo + 14 * 4}
-                  />
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <UbiSelectors handler={cargarHorarioSala} resetHorario={resetHorario} />
+        {horario && <HorarioSala data={horario} />}
       </div>
     </div>
   );
 }
-function BloqueDispoSala({
-  codigo = "",
-  nombre = "",
-  carrera = "",
-  profesor = "",
-  id = "",
-}) {
-  return (
-    <td id={id}>
-      Código: {codigo}
-      <br />
-      {nombre}
-      <br />
-      Carrera: {carrera}
-      <br />
-      Profesor: {profesor}
-    </td>
-  );
-}
 
-function UbiSelectors({ handler }) {
+function UbiSelectors({ handler, resetHorario }) {
   // Departamentos Disponibles
   const [depas, setDepas] = useState([]);
   // Salas Disponibles
@@ -116,6 +62,7 @@ function UbiSelectors({ handler }) {
     const codigo = parseInt(e.target.value);
     setDepaInt(codigo);
     setSalaInt(0);
+    resetHorario();
     if (codigo <= 0) {
       setSalaSel([]);
       return;
@@ -145,7 +92,11 @@ function UbiSelectors({ handler }) {
       </div>
       <div className="sel">
         <label>Sala:</label>
-        <select value={salaInt} onChange={handleSalaInt} disabled={depaInt <= 0}>
+        <select
+          value={salaInt}
+          onChange={handleSalaInt}
+          disabled={depaInt <= 0}
+        >
           <option value={0}>Seleccione una sala</option>
           {salaSel.map((sala) => (
             <option key={sala.idSala} value={sala.idSala}>
@@ -155,5 +106,69 @@ function UbiSelectors({ handler }) {
         </select>
       </div>
     </div>
+  );
+}
+
+function HorarioSala({ data }) {
+  const n_bloques = [];
+  for (let i = 1; i <= data.bpd; i++) {
+    n_bloques.push(i);
+  }
+
+  const data_local = [...data.asignaciones];
+  console.log(data_local);
+  return (
+    <div className="horario" id="horarioAsign">
+      <table>
+        <thead>
+          <tr>
+            <th>Lunes</th>
+            <th>Martes</th>
+            <th>Miercoles</th>
+            <th>Jueves</th>
+            <th>Viernes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data_local.map((fila, i) => (
+            <FilaAsignaciones key={i} filaAsign={fila} filaNum={i} />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function FilaAsignaciones({ filaAsign, filaNum }) {
+  return (
+    <tr>
+      {filaAsign.map((asign, i) => (
+        <BloqueDispoSala
+          key={[filaNum, i]}
+          asignacion={asign}
+          k={[filaNum, i]}
+        />
+      ))}
+    </tr>
+  );
+}
+function BloqueDispoSala({ asignacion, k }) {
+  if (asignacion === null) {
+    k.push("none");
+    return <td id={k}>
+      SIN ASIGNACION
+    </td>;
+  }
+  k.push(asignacion.cod_ramo);
+  return (
+    <td id={k} className="asignado">
+      {`Código: ${asignacion.cod_ramo}`}
+      <br />
+      {asignacion.ramo}
+      <br />
+      {`Grupo: ${asignacion.grupo}`}
+      <br />
+      {`Profesor: ${asignacion.docente}`}
+    </td>
   );
 }

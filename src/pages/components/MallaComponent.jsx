@@ -38,12 +38,11 @@ export default function MallaComponent({ramos}) {
         arr[val.numSemestre - 1] = val;
         return 0;
       });
-
     trows.push(<RowBloques key={i} arrayRamos={arr} width={totalSemestres} />);
   }
 
   return (
-    <div id="mallaComponent">
+    <div className="horario">
       <table>
         <thead>
           <tr>{ths}</tr>
@@ -52,32 +51,6 @@ export default function MallaComponent({ramos}) {
       </table>
     </div>
   );
-}
-
-function BloqueCarrera({
-  codigo = "",
-  nombre = "",
-  numSemestre = "",
-  maxBloques = "",
-  id = "",
-  valido,
-}) {
-  if (valido) {
-    return (
-      <td id={id} className="valido" title={nombre}>
-        {codigo}
-        <br />
-        {nombre}
-        <br />
-        Semestre {numSemestre}
-        <br />
-        {`(0/m$x)`.replace('m$x', maxBloques)}
-        
-      </td>
-    );
-  } else {
-    return <td></td>;
-  }
 }
 
 function RowBloques({ arrayRamos }) {
@@ -89,11 +62,7 @@ function RowBloques({ arrayRamos }) {
         } else {
           return (
             <BloqueCarrera
-              nombre={ramo.nombre}
-              codigo={ramo.codigo}
-              numSemestre={ramo.numSemestre}
-              maxBloques={ramo.maxBloques}
-              id={ramo.codigo}
+              {...ramo}
               key={i}
               valido
             />
@@ -102,4 +71,31 @@ function RowBloques({ arrayRamos }) {
       })}
     </tr>
   );
+}
+
+function BloqueCarrera({
+  codigo,
+  nombre,
+  numSemestre,
+  maxBloques,
+  id,
+  conteo,
+  valido,
+}) {
+  if (valido) {
+    return (
+      <td id={id} className="valido" title={nombre}>
+        {codigo}
+        <br />
+        {nombre}
+        <br />
+        Semestre {numSemestre}
+        <br />
+        {`(${conteo}/${maxBloques})`}
+        
+      </td>
+    );
+  } else {
+    return <td></td>;
+  }
 }

@@ -7,12 +7,12 @@
 #asignacionP > div {
   border: 1px solid black;
 }
-#ramosContainer{
+#ramosContainer {
   display: flex;
   flex-direction: column;
 }
 
-#ramosContainer > input[type='text']{
+#ramosContainer > input[type="text"] {
   width: 90%;
   height: 30px;
   font-size: 16px;
@@ -69,6 +69,7 @@
   border-radius: 15px;
   cursor: pointer;
   transition: 0.3s;
+  -webkit-user-select: none;
   user-select: none;
 }
 .ramoAsi button:hover {
@@ -76,32 +77,53 @@
   transform: scale(1.1, 1);
 }
 
-#asignacionSec{
+#asignacionSec {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.salaSel{
+.salaSel {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.salaSel .sel{
+.salaSel .sel {
   padding: 1rem 0;
   text-align: center;
   width: 100%;
 }
-.salaSel label{
+.salaSel label {
   display: block;
 }
-.salaSel select{
+.salaSel select {
   width: 95%;
   text-align: center;
   font-size: 16px;
+  -webkit-user-select: none;
   user-select: none;
 }
-.salaSel select::-ms-expand{
+.salaSel select::-ms-expand {
   display: none;
+}
+
+/* CSS Horario */
+#horarioAsign table {
+  padding: 0;
+}
+#horarioAsign td {
+  border: 1px solid black;
+  min-width: 150px;
+  width: 150px;
+  height: 100px;
+  -webkit-user-select: none;
+  user-select: none;
+  white-space: normal;
+}
+#horarioAsign td:hover {
+  cursor: pointer;
+}
+#horarioAsign .asignado {
+  background-color: #dfdfdf;
 }
 
 /* Media query para pantallas con width mayor a 992px */
@@ -119,6 +141,17 @@
     max-height: 1000px;
   }
   .ramoAsi {
-    width: 150px;
+    width: 180px;
+  }
+  #ramosContainer {
+    width: 25%;
+  }
+  #asignacionSec {
+    width: 70%;
   }
 }
+/* @media (min-width: 1200px) {
+  #asignacionP {
+    width: 1200px;
+  }
+} */
