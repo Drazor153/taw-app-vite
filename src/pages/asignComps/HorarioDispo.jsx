@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import RamosContainer from "./RamosContainer";
 
-export default function HorarioDispoSala({ ramosExt }) {
-  // let n_bloques = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+export default function HorarioDispo() {
   const [horario, setHorario] = useState(null);
 
   const resetHorario = () => {
@@ -22,18 +20,13 @@ export default function HorarioDispoSala({ ramosExt }) {
       setHorario(data);
     }
   };
-
   return (
-    <div id="asignacionP">
-      <RamosContainer ramosExt={ramosExt} />
-      <div id="asignacionSec">
-        <UbiSelectors handler={cargarHorarioSala} resetHorario={resetHorario} />
-        {horario && <HorarioSala data={horario} />}
-      </div>
+    <div id="asignacionSec">
+      <UbiSelectors handler={cargarHorarioSala} resetHorario={resetHorario} />
+      {horario && <HorarioSala data={horario} />}
     </div>
   );
 }
-
 function UbiSelectors({ handler, resetHorario }) {
   // Departamentos Disponibles
   const [depas, setDepas] = useState([]);
@@ -155,9 +148,7 @@ function FilaAsignaciones({ filaAsign, filaNum }) {
 function BloqueDispoSala({ asignacion, k }) {
   if (asignacion === null) {
     k.push("none");
-    return <td id={k}>
-      SIN ASIGNACION
-    </td>;
+    return <td id={k}>SIN ASIGNACION</td>;
   }
   k.push(asignacion.cod_ramo);
   return (

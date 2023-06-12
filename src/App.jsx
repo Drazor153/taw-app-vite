@@ -11,7 +11,6 @@ import "./styles/navbar.css";
 import "./styles/login.css";
 import "./styles/malla.css";
 import "./styles/carplan.css";
-import "./styles/asignacion.css";
 import { AuthProvider, ProtectedRoute } from "./AuthProvider";
 
 const App = () => {

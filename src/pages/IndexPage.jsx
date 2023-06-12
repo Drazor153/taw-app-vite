@@ -7,7 +7,7 @@ export function HomePage() {
   useEffect(() => {
     setTimeout(() => {
       navigate("/login", { replace: true });
-    }, 100);
+    }, 500);
   });
 
   return (

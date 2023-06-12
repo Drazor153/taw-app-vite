@@ -37,7 +37,7 @@ export default function Malla() {
   };
 
   return (
-    <div id="mallaP">
+    <div className="mallaP">
       <h1>Seccion Malla Curricular</h1>
       <CarPlanComponent
         setCarreraExt={updCar}
