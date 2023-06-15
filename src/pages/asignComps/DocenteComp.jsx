@@ -2,14 +2,14 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 
 export default function DocenteCompt({ ramoElegido }) {
   return (
-    <div>
+    <div id="docenteComp">
       <h3>Arrastre el ramo que quiera asignar:</h3>
       <Droppable
         droppableId="ramoElegido"
-        isDropDisabled={ramoElegido.ramos.length === 1}
+        // isDropDisabled={ramoElegido.ramos.length === 1}
       >
         {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
+          <div ref={provided.innerRef} {...provided.droppableProps} id="ramoElegido">
             {ramoElegido.ramos.map((ramo, i) => (
               <Draggable key={ramo.codigo} draggableId={ramo.codigo} index={i}>
                 {(provided) => (

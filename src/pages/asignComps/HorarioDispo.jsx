@@ -21,7 +21,7 @@ export default function HorarioDispo() {
     }
   };
   return (
-    <div id="asignacionSec">
+    <div id="horarioDispo">
       <UbiSelectors handler={cargarHorarioSala} resetHorario={resetHorario} />
       {horario && <HorarioSala data={horario} />}
     </div>
@@ -109,7 +109,7 @@ function HorarioSala({ data }) {
   }
 
   const data_local = [...data.asignaciones];
-  console.log(data_local);
+  // console.log(data_local);
   return (
     <div className="horario" id="horarioAsign">
       <table>
