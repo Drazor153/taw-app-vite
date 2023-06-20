@@ -5,7 +5,8 @@
   justify-content: center;
 }
 #asignacionP > div {
-  border: 1px solid black;
+  flex: 1;
+  /* border: 1px solid black; */
 }
 #ramosContainer {
   display: flex;
@@ -156,10 +157,29 @@
   }
 } */
 
-
+/* DocenteComp */
 #ramoElegido{
   background-color: #dfdfdf;
   height: 150px;
   display: grid;
   place-items: center;
+}
+.docente-list{
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 10px;
+}
+.docente-item{
+  background-color: var(--docenteBg);
+  padding: 1rem;
+  border-radius: 15px;
+  border: 1px solid black;
+}
+.docente-item:hover{
+  /* background-color: var(--docenteHover); */
+  cursor: pointer;
+}
+.docente-item-active{
+  background-color: var(--docenteActive);
 }

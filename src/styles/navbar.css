@@ -15,6 +15,10 @@
   --selectColor: #d1dafd;
   --cellHover: #9cb8ff;
   --btnRamoAsi: #d1ddfa;
+
+  --docenteBg: #dfdfdf;
+  --docenteHover: #a0a0a0;
+  --docenteActive: cornflowerblue;
 }
 .active {
   color: var(--secondaryColor);

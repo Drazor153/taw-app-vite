@@ -1,6 +1,11 @@
+import { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 
-export default function DocenteCompt({ ramoElegido }) {
+export default function DocenteCompt({
+  ramoElegido,
+  docenteArray,
+  setDocente,
+}) {
   return (
     <div id="docenteComp">
       <h3>Arrastre el ramo que quiera asignar:</h3>
@@ -9,7 +14,11 @@ export default function DocenteCompt({ ramoElegido }) {
         // isDropDisabled={ramoElegido.ramos.length === 1}
       >
         {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps} id="ramoElegido">
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            id="ramoElegido"
+          >
             {ramoElegido.ramos.map((ramo, i) => (
               <Draggable key={ramo.codigo} draggableId={ramo.codigo} index={i}>
                 {(provided) => (
@@ -42,12 +51,28 @@ export default function DocenteCompt({ ramoElegido }) {
       </Droppable>
       <div>
         <h3>Profesores que imparten este ramo:</h3>
-        <ul>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
-        </ul>
+        <div className="docente-list">
+          {docenteArray.map((docenteObj) => (
+            <DocenteItem
+              key={docenteObj.rut}
+              {...docenteObj}
+              set={setDocente}
+            />
+          ))}
+        </div>
       </div>
+    </div>
+  );
+}
+
+function DocenteItem({ nombre, rut, set }) {
+  const handler = () => {
+    set(rut);
+  };
+  const classesList = ["docente-item"];
+  return (
+    <div id={rut} className={classesList.join(" ")} onClick={handler}>
+      {nombre}
     </div>
   );
 }

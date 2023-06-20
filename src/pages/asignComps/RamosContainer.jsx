@@ -4,28 +4,6 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 export default function RamosContainer({ listaRamos }) {
   const [filter, setFilter] = useState("");
 
-  // const lista = listaRamos.filter(
-  //   (x) =>
-  //     x.codigo.toLowerCase().includes(filter) ||
-  //     x.nombre.toLowerCase().includes(filter)
-  // );
-  // if (lista.length === 0) {
-  //   lista.push({ noRes: 1 });
-  // }
-
-  // const ramoFilter = (e) => {
-  //   const word = e.target.value.toLowerCase();
-  //   const lista = ramosExt.filter(
-  //     (x) =>
-  //       x.codigo.toLowerCase().includes(word) ||
-  //       x.nombre.toLowerCase().includes(word)
-  //   );
-  //   if (lista.length === 0) {
-  //     lista.push({ noRes: 1 });
-  //   }
-  //   setRamosNav(lista);
-  // };
-
   return (
     <div id="ramosContainer">
       <input

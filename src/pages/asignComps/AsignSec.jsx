@@ -16,6 +16,7 @@ export default function AsignSec({ ramosExt }) {
     },
   };
   const [ramosNav, setRamosNav] = useState(columnsData);
+  const [docenteArray, setDocenteArray] = useState([]);
 
   // Estados para guardar datos para crear Asignación
   const [docente, setDocente] = useState(0);
@@ -23,8 +24,12 @@ export default function AsignSec({ ramosExt }) {
   const [sala, setSala] = useState(0);
 
   useEffect(() => {
-    console.log(ramosNav);
-  }, [ramosNav]);
+    const ramoElegido = ramosNav.ramoElegido.ramos[0];
+    if (ramoElegido === undefined || docente <= 1000000) {
+      return;
+    }
+    console.log("Ramo y profesor elegidos :D", ramoElegido, docente);
+  }, [ramosNav, docente]);
 
   const handleDragEnd = (result) => {
     const { source, destination } = result;
@@ -37,7 +42,7 @@ export default function AsignSec({ ramosExt }) {
     ) {
       return;
     }
-    if(source.droppableId === 'ramoElegido'){
+    if (source.droppableId === "ramoElegido") {
       return;
     }
     // Copiar los items de la columna de origen
@@ -49,17 +54,13 @@ export default function AsignSec({ ramosExt }) {
     const destinationItems = [...destinationColumn.ramos];
 
     const [returnItem] = destinationItems.splice(0, 1);
-    console.log("Return item: ", returnItem);
     // Mover el ítem de origen a la columna de destino
     const [movedItem] = sourceItems.splice(source.index, 1);
     destinationItems.splice(destination.index, 0, movedItem);
     if (returnItem !== undefined) {
       sourceItems.splice(0, 0, returnItem);
     }
-    console.log(sourceItems);
-    // console.log(ramosNav.listaRamos.ramos);
-    // console.log(destinationColumn)
-    // console.log(destinationItems)
+
     // Actualizar el estado con las columnas y los items modificados
     setRamosNav({
       ...ramosNav,
@@ -72,15 +73,31 @@ export default function AsignSec({ ramosExt }) {
         ramos: destinationItems,
       },
     });
+
+    // Obtener profesores que imparten el ramo
+    const ramoEscogido = destinationItems[0];
+    fetch(
+      `${import.meta.env.VITE_API_URL}getprofesores?` +
+        new URLSearchParams({ ramoEscogido: ramoEscogido.codigo })
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setDocenteArray(data);
+      });
+
+    setDocente(0);
   };
-  const handleDragEnd1 = (res) => {
-    console.log(res);
-  };
+
   return (
     <div id="asignacionP">
       <DragDropContext onDragEnd={handleDragEnd}>
         <RamosContainer listaRamos={ramosNav.listaRamos.ramos} />
-        <DocenteCompt ramoElegido={ramosNav.ramoElegido} />
+        <DocenteCompt
+          ramoElegido={ramosNav.ramoElegido}
+          docenteArray={docenteArray}
+          docente={docente}
+          setDocente={setDocente}
+        />
         <HorarioDispo />
       </DragDropContext>
     </div>
