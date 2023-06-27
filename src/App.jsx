@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import HomeNavbar from "./pages/HomeNavbar";
+import HomeNavbar from "./pages/components/HomeNavbar";
 import Asignation from "./pages/Asignation";
 import Malla from "./pages/Malla";
 import { HomeUser } from "./pages/HomeUser";

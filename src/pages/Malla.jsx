@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CarPlanComponent from "./components/CarPlanComponent";
-import MallaComponent from "./components/MallaComponent";
+import MallaComponent from "./components/malla/MallaComponent";
 
 export default function Malla() {
   const [carreraSel, setCarreraSel] = useState(0);

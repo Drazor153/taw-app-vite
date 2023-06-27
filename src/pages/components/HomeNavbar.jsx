@@ -1,6 +1,6 @@
 import { NavLink, Outlet, Link } from "react-router-dom";
 import { useRef, useState } from "react";
-import { useAuth } from "../AuthProvider";
+import { useAuth } from "../../AuthProvider";
 import { AiOutlineClose , AiOutlineMenu} from "react-icons/ai";
 
 export default function HomeNavbar() {

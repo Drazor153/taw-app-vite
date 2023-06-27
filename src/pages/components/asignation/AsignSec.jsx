@@ -1,10 +1,9 @@
 import RamosContainer from "./RamosContainer";
 import HorarioDispo from "./HorarioDispo";
 import { DragDropContext } from "react-beautiful-dnd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DocenteCompt from "./DocenteComp";
-import { useEffect } from "react";
-
+import { asignContext } from "../../../AuthProvider";
 export default function AsignSec({ ramosExt }) {
   // Objeto para DnD
   const columnsData = {
@@ -23,13 +22,42 @@ export default function AsignSec({ ramosExt }) {
   const [bloques, setBloques] = useState([]);
   const [sala, setSala] = useState(0);
 
+  const exists = (lista, obj) => {
+    return lista.some(
+      (item) => item.dia === obj.dia && item.bloque === obj.bloque
+    );
+  };
+
+  const addBloque = (bloque) => {
+    if (!exists(bloques, bloque)) {
+      setBloques([...bloques, bloque]);
+    }
+  };
+  const resetBloques = () => {
+    setBloques([]);
+  };
+
+  const funcs = {
+    addBloque,
+    setSala,
+    resetBloques,
+  };
+
   useEffect(() => {
     const ramoElegido = ramosNav.ramoElegido.ramos[0];
-    if (ramoElegido === undefined || docente <= 1000000) {
+    if (ramoElegido === undefined || docente <= 1000000 || bloques.length < 1) {
       return;
     }
-    console.log("Ramo y profesor elegidos :D", ramoElegido, docente);
-  }, [ramosNav, docente]);
+    const asignacion = {
+      ramo: {
+        codigo: ramoElegido.codigo,
+        nombre: ramoElegido.nombre,
+      },
+      profesor: docente,
+      bloques,
+    };
+    console.log(asignacion);
+  }, [ramosNav, docente, bloques]);
 
   const handleDragEnd = (result) => {
     const { source, destination } = result;
@@ -89,17 +117,19 @@ export default function AsignSec({ ramosExt }) {
   };
 
   return (
-    <div id="asignacionP">
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <RamosContainer listaRamos={ramosNav.listaRamos.ramos} />
-        <DocenteCompt
-          ramoElegido={ramosNav.ramoElegido}
-          docenteArray={docenteArray}
-          docente={docente}
-          setDocente={setDocente}
-        />
-        <HorarioDispo />
-      </DragDropContext>
-    </div>
+    <asignContext.Provider value={funcs}>
+      <div id="asignacionP">
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <RamosContainer listaRamos={ramosNav.listaRamos.ramos} />
+          <DocenteCompt
+            ramoElegido={ramosNav.ramoElegido}
+            docenteArray={docenteArray}
+            docente={docente}
+            setDocente={setDocente}
+          />
+          <HorarioDispo setBloques={setBloques} />
+        </DragDropContext>
+      </div>
+    </asignContext.Provider>
   );
 }

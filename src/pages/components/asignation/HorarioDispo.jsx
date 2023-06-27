@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { asignContext } from "../../../AuthProvider";
 
 export default function HorarioDispo() {
   const [horario, setHorario] = useState(null);
+  const { resetBloques } = useContext(asignContext);
 
   const resetHorario = () => {
     setHorario(null);
   };
 
   const cargarHorarioSala = async (depa, sala) => {
+    resetBloques();
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}sala?` +
         new URLSearchParams({
@@ -146,13 +149,28 @@ function FilaAsignaciones({ filaAsign, filaNum }) {
   );
 }
 function BloqueDispoSala({ asignacion, k }) {
+  const { addBloque } = useContext(asignContext);
+
+  const action = () => {
+    if (k[2] !== "none") return;
+    const bloque = {
+      dia: k[1] + 1,
+      bloque: k[0] + 1,
+    };
+    addBloque(bloque);
+  };
+
   if (asignacion === null) {
     k.push("none");
-    return <td id={k}>SIN ASIGNACION</td>;
+    return (
+      <td id={k} onClick={action}>
+        SIN ASIGNACION
+      </td>
+    );
   }
   k.push(asignacion.cod_ramo);
   return (
-    <td id={k} className="asignado">
+    <td id={k} className="asignado" onClick={action}>
       {`Código: ${asignacion.cod_ramo}`}
       <br />
       {asignacion.ramo}

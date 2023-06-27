@@ -73,4 +73,6 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
-export { useAuth, AuthProvider, ProtectedRoute };
+const asignContext = createContext(null);
+
+export { useAuth, AuthProvider, ProtectedRoute, asignContext };

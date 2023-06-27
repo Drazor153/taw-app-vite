@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AsignSec from "./asignComps/AsignSec";
+import AsignSec from "./components/asignation/AsignSec";
 import CarPlanComponent from "./components/CarPlanComponent";
 
 import "../styles/asignacion.css";
