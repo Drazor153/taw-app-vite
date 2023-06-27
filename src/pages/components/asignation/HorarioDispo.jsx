@@ -35,6 +35,7 @@ function UbiSelectors({ handler, resetHorario }) {
   const [depas, setDepas] = useState([]);
   // Salas Disponibles
   const [salas, setSalas] = useState([]);
+  const { salaRef } = useContext(asignContext);
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}ubicaciones`)
       .then((response) => response.json())
@@ -54,6 +55,12 @@ function UbiSelectors({ handler, resetHorario }) {
   // Almacena sala escogida
   const [salaInt, setSalaInt] = useState(0);
 
+  useEffect(() => {
+    salaRef.current = {
+      departamento: depaInt,
+      sala: salaInt,
+    };
+  }, [depaInt, salaInt]);
   const handleDepaInt = (e) => {
     const codigo = parseInt(e.target.value);
     setDepaInt(codigo);
@@ -136,22 +143,28 @@ function HorarioSala({ data }) {
 }
 
 function FilaAsignaciones({ filaAsign, filaNum }) {
+  const { arrayBloques } = useContext(asignContext);
   return (
     <tr>
-      {filaAsign.map((asign, i) => (
-        <BloqueDispoSala
-          key={[filaNum, i]}
-          asignacion={asign}
-          k={[filaNum, i]}
-        />
-      ))}
+      {filaAsign.map((asign, i) => {
+        const selected = arrayBloques.some(
+          (item) => item.dia === i + 1 && item.bloque === filaNum + 1
+        );
+        return (
+          <BloqueDispoSala
+            key={[filaNum, i]}
+            asignacion={asign}
+            k={[filaNum, i]}
+            selected={selected}
+          />
+        );
+      })}
     </tr>
   );
 }
-function BloqueDispoSala({ asignacion, k }) {
+function BloqueDispoSala({ asignacion, k, selected }) {
   const { addBloque } = useContext(asignContext);
-
-  const action = () => {
+  const action = function () {
     if (k[2] !== "none") return;
     const bloque = {
       dia: k[1] + 1,
@@ -163,14 +176,22 @@ function BloqueDispoSala({ asignacion, k }) {
   if (asignacion === null) {
     k.push("none");
     return (
-      <td id={k} onClick={action}>
+      <td
+        id={k}
+        onClick={action}
+        className={selected ? "bloque-seleccionado" : ""}
+      >
         SIN ASIGNACION
       </td>
     );
   }
   k.push(asignacion.cod_ramo);
   return (
-    <td id={k} className="asignado" onClick={action}>
+    <td
+      id={k}
+      className={selected ? "asignado bloque-seleccionado" : "asignado"}
+      onClick={action}
+    >
       {`Código: ${asignacion.cod_ramo}`}
       <br />
       {asignacion.ramo}

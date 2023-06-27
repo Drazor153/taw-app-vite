@@ -1,10 +1,11 @@
 import RamosContainer from "./RamosContainer";
 import HorarioDispo from "./HorarioDispo";
 import { DragDropContext } from "react-beautiful-dnd";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import DocenteCompt from "./DocenteComp";
 import { asignContext } from "../../../AuthProvider";
-export default function AsignSec({ ramosExt }) {
+import { useRef } from "react";
+export default function AsignSec({ ramosExt, reload }) {
   // Objeto para DnD
   const columnsData = {
     listaRamos: {
@@ -15,23 +16,34 @@ export default function AsignSec({ ramosExt }) {
     },
   };
   const [ramosNav, setRamosNav] = useState(columnsData);
+  const ramoElegido = ramosNav.ramoElegido.ramos[0];
   const [docenteArray, setDocenteArray] = useState([]);
 
   // Estados para guardar datos para crear Asignación
   const [docente, setDocente] = useState(0);
   const [bloques, setBloques] = useState([]);
-  const [sala, setSala] = useState(0);
+  const sala = useRef();
 
-  const exists = (lista, obj) => {
-    return lista.some(
+  const exists = (obj) => {
+    return bloques.findIndex(
       (item) => item.dia === obj.dia && item.bloque === obj.bloque
     );
   };
 
   const addBloque = (bloque) => {
-    if (!exists(bloques, bloque)) {
-      setBloques([...bloques, bloque]);
+    if (ramoElegido === undefined) return false;
+    const index = exists(bloque);
+    if (index >= 0) {
+      const lista = [...bloques];
+      lista.splice(index, 1);
+      setBloques(lista);
+      return false;
     }
+    if (bloques.length >= ramoElegido.maxBloques - ramoElegido.conteo) {
+      return false;
+    }
+    setBloques([...bloques, bloque]);
+    return true;
   };
   const resetBloques = () => {
     setBloques([]);
@@ -39,25 +51,42 @@ export default function AsignSec({ ramosExt }) {
 
   const funcs = {
     addBloque,
-    setSala,
     resetBloques,
+    arrayBloques: bloques,
+    salaRef: sala,
   };
-
-  useEffect(() => {
-    const ramoElegido = ramosNav.ramoElegido.ramos[0];
+  const submitAsignacion = async () => {
     if (ramoElegido === undefined || docente <= 1000000 || bloques.length < 1) {
       return;
     }
     const asignacion = {
-      ramo: {
-        codigo: ramoElegido.codigo,
-        nombre: ramoElegido.nombre,
-      },
+      codigoRamo: ramoElegido.codigo,
       profesor: docente,
       bloques,
+      salaRef: sala.current,
     };
+    const url = import.meta.env.VITE_API_URL + "asignacion";
+    const requestOptions = {
+      method: "POST",
+      // credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(asignacion),
+    };
+    try {
+      const response = await fetch(url, requestOptions);
+      if (response.ok) {
+        const text = await response.json();
+        resetBloques();
+        setDocente();
+        alert(text.res);
+        reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
     console.log(asignacion);
-  }, [ramosNav, docente, bloques]);
+  };
 
   const handleDragEnd = (result) => {
     const { source, destination } = result;
@@ -114,6 +143,7 @@ export default function AsignSec({ ramosExt }) {
       });
 
     setDocente(0);
+    setBloques([]);
   };
 
   return (
@@ -121,13 +151,18 @@ export default function AsignSec({ ramosExt }) {
       <div id="asignacionP">
         <DragDropContext onDragEnd={handleDragEnd}>
           <RamosContainer listaRamos={ramosNav.listaRamos.ramos} />
-          <DocenteCompt
-            ramoElegido={ramosNav.ramoElegido}
-            docenteArray={docenteArray}
-            docente={docente}
-            setDocente={setDocente}
-          />
-          <HorarioDispo setBloques={setBloques} />
+          <div>
+            <button onClick={submitAsignacion}>Enviar asignación</button>
+          </div>
+          <div className="asignP1">
+            <DocenteCompt
+              ramoElegido={ramosNav.ramoElegido}
+              docenteArray={docenteArray}
+              docenteSelected={docente}
+              setDocente={setDocente}
+            />
+            <HorarioDispo setBloques={setBloques} />
+          </div>
         </DragDropContext>
       </div>
     </asignContext.Provider>

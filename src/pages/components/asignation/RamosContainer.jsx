@@ -11,7 +11,7 @@ export default function RamosContainer({ listaRamos }) {
         onChange={(e) => setFilter(e.target.value.toLowerCase())}
         placeholder="Busque ramos por su nombre o código"
       />
-      <Droppable droppableId="listaRamos" isDropDisabled={true}>
+      <Droppable droppableId="listaRamos" isDropDisabled={true} direction="row">
         {(provided, snapshot) => (
           <div
             {...provided.droppableProps}

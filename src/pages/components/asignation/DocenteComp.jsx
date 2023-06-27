@@ -1,10 +1,10 @@
-import { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 
 export default function DocenteCompt({
   ramoElegido,
   docenteArray,
   setDocente,
+  docenteSelected,
 }) {
   return (
     <div id="docenteComp">
@@ -12,6 +12,7 @@ export default function DocenteCompt({
       <Droppable
         droppableId="ramoElegido"
         // isDropDisabled={ramoElegido.ramos.length === 1}
+        direction="row"
       >
         {(provided) => (
           <div
@@ -57,6 +58,7 @@ export default function DocenteCompt({
               key={docenteObj.rut}
               {...docenteObj}
               set={setDocente}
+              selected={docenteSelected === docenteObj.rut}
             />
           ))}
         </div>
@@ -65,11 +67,14 @@ export default function DocenteCompt({
   );
 }
 
-function DocenteItem({ nombre, rut, set }) {
+function DocenteItem({ nombre, rut, set, selected}) {
   const handler = () => {
     set(rut);
   };
   const classesList = ["docente-item"];
+  if(selected){
+   classesList.push('docente-selected') 
+  }
   return (
     <div id={rut} className={classesList.join(" ")} onClick={handler}>
       {nombre}

@@ -2,19 +2,18 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  justify-content: center;
+  align-items: center;
 }
-#asignacionP > div {
-  flex: 1;
-  /* border: 1px solid black; */
-}
+/* #asignacionP > div {
+  border: 1px solid black;
+} */
 #ramosContainer {
   display: flex;
   flex-direction: column;
 }
 
 #ramosContainer > input[type="text"] {
-  width: 90%;
+  width: 30%;
   height: 30px;
   font-size: 16px;
   padding: 0 25px;
@@ -77,6 +76,10 @@
   background-color: var(--cellHover);
   transform: scale(1.1, 1);
 }
+.asignP1{
+  display: flex;
+  justify-content: space-evenly;
+}
 
 #horarioDispo {
   display: flex;
@@ -126,23 +129,26 @@
 #horarioAsign .asignado {
   background-color: #dfdfdf;
 }
+#horarioAsign .bloque-seleccionado{
+  background-color: rgb(210, 135, 82);
+}
 
 /* Media query para pantallas con width mayor a 992px */
 @media (min-width: 992px) {
-  #asignacionP {
-    flex-direction: row;
-    justify-content: space-evenly;
-  }
-  .flex-ramos {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-y: auto;
-    overflow-x: unset;
-    max-height: 1000px;
-  }
   .ramoAsi {
     width: 180px;
+  }
+  #ramosContainer{
+    width: 95%;
+  }
+  .asignP1{
+    width: 95%;
+  }
+  #docenteComp{
+    width: 300px;
+  }
+  #horarioDispo{
+    width: 850px;
   }
   /* #ramosContainer {
     width: 25%;
@@ -163,6 +169,7 @@
   height: 150px;
   display: grid;
   place-items: center;
+  border-radius: 20px;
 }
 .docente-list{
   display: flex;
@@ -180,6 +187,6 @@
   /* background-color: var(--docenteHover); */
   cursor: pointer;
 }
-.docente-item-active{
+.docente-selected{
   background-color: var(--docenteActive);
 }

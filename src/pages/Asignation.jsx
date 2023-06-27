@@ -22,6 +22,8 @@ export default function Asignation() {
   const [malla, setMalla] = useState([]);
 
   const handleInfo = async () => {
+    setShowMalla(false);
+    setMalla([]);
     try {
       const response = await fetch(
         import.meta.env.VITE_API_URL +
@@ -49,7 +51,7 @@ export default function Asignation() {
         setPlanExt={updPlan}
         actionInfo={handleInfo}
       />
-      {showMalla && <AsignSec ramosExt={malla}/>}
+      {showMalla && <AsignSec ramosExt={malla} reload={handleInfo}/>}
       
     </div>
   );
