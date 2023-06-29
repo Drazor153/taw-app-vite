@@ -3,14 +3,36 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 
 export default function RamosContainer({ listaRamos }) {
   const [filter, setFilter] = useState("");
+  const [filterSemestre, setFilterSemestre] = useState(0);
+
+  const totalSemestres = listaRamos.reduce(
+    (max, obj) => (obj.numSemestre > max ? obj.numSemestre : max),
+    listaRamos[0].numSemestre
+  );
+
+  const opciones_semestre = [];
+  for (let i = 1; i <= totalSemestres; i++) {
+    opciones_semestre.push(<option value={i}>{`Semestre ${i}`}</option>);
+  }
 
   return (
     <div id="ramosContainer">
-      <input
-        type="text"
-        onChange={(e) => setFilter(e.target.value.toLowerCase())}
-        placeholder="Busque ramos por su nombre o código"
-      />
+      <div className="filtros">
+        <input
+          className="filter-nombre-codigo"
+          type="text"
+          onChange={(e) => setFilter(e.target.value.toLowerCase())}
+          placeholder="Busque ramos por su nombre o código"
+        />
+        <select
+          className="filter-semestre"
+          value={filterSemestre}
+          onChange={(e) => setFilterSemestre(parseInt(e.target.value))}
+        >
+          <option value={0}>Todos los semestres</option>
+          {opciones_semestre}
+        </select>
+      </div>
       <Droppable droppableId="listaRamos" isDropDisabled={true} direction="row">
         {(provided, snapshot) => (
           <div
@@ -19,9 +41,12 @@ export default function RamosContainer({ listaRamos }) {
             className="flex-ramos"
           >
             {listaRamos.map((ramo, i) => {
-              // console.log(ramo)
+              // console.log(filterSemestre)
               if (ramo.noRes) {
                 return <div key={0}>No se han encontrado coincidencias</div>;
+              }
+              if (filterSemestre != 0 && ramo.numSemestre !== filterSemestre) {
+                return;
               }
               if (
                 ramo.codigo.toLowerCase().includes(filter) ||

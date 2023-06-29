@@ -1,10 +1,10 @@
 import RamosContainer from "./RamosContainer";
 import HorarioDispo from "./HorarioDispo";
 import { DragDropContext } from "react-beautiful-dnd";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import DocenteCompt from "./DocenteComp";
 import { asignContext } from "../../../AuthProvider";
-import { useRef } from "react";
+
 export default function AsignSec({ ramosExt, reload }) {
   // Objeto para DnD
   const columnsData = {
@@ -24,6 +24,7 @@ export default function AsignSec({ ramosExt, reload }) {
   const [bloques, setBloques] = useState([]);
   const sala = useRef();
 
+  const [asignDisabled, setAsignDisabled] = useState(true);
   const exists = (obj) => {
     return bloques.findIndex(
       (item) => item.dia === obj.dia && item.bloque === obj.bloque
@@ -55,7 +56,16 @@ export default function AsignSec({ ramosExt, reload }) {
     arrayBloques: bloques,
     salaRef: sala,
   };
+  useEffect(() => {
+    if (ramoElegido === undefined || docente <= 1000000 || bloques.length < 1) {
+      setAsignDisabled(true);
+      return;
+    }
+    setAsignDisabled(false);
+  }, [ramoElegido, docente, bloques]);
+
   const submitAsignacion = async () => {
+    console.log('s');
     if (ramoElegido === undefined || docente <= 1000000 || bloques.length < 1) {
       return;
     }
@@ -84,7 +94,6 @@ export default function AsignSec({ ramosExt, reload }) {
     } catch (error) {
       console.error(error);
     }
-
     console.log(asignacion);
   };
 
@@ -151,8 +160,10 @@ export default function AsignSec({ ramosExt, reload }) {
       <div id="asignacionP">
         <DragDropContext onDragEnd={handleDragEnd}>
           <RamosContainer listaRamos={ramosNav.listaRamos.ramos} />
-          <div>
-            <button onClick={submitAsignacion}>Enviar asignación</button>
+          <div className="btnDiv">
+            <button className="button" onClick={submitAsignacion} disabled={asignDisabled}>
+              Enviar asignación
+            </button>
           </div>
           <div className="asignP1">
             <DocenteCompt

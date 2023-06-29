@@ -122,7 +122,7 @@ function Info({ car, plan, action }) {
         <b>{car}</b>, plan <b>{plan}</b>
       </div>
       <div className="btnDiv">
-        <button onClick={action}>Confirmar seleccion</button>
+        <button className="button" onClick={action}>Confirmar seleccion</button>
       </div>
     </div>
   );

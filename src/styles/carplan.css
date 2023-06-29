@@ -14,19 +14,20 @@
   display: block;
 }
 #car-plan .sel select {
-    height: 30px;
-    width: 95%;
-    text-align: center;
-    font-size: 16px;
-    user-select: none;
+  height: 30px;
+  width: 95%;
+  text-align: center;
+  font-size: 16px;
+  user-select: none;
+  border-radius: 10px;
 }
-#car-plan .sel select::-ms-expand{
-    display: none;
+#car-plan .sel select::-ms-expand {
+  display: none;
 }
-#car-plan .infoCarPlan{
-    width: 100%;
-    text-align: center;
-    font-size: 24px;
+#car-plan .infoCarPlan {
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
 }
 
 .infoCarPlan {
@@ -42,7 +43,7 @@
   display: flex;
   justify-content: center;
 }
-.infoCarPlan button {
+.button {
   padding: 0.4rem 1.5rem;
   background: var(--mainColor);
   color: #fff;
@@ -53,21 +54,28 @@
   transition: 0.3s;
   user-select: none;
 }
-.infoCarPlan button:hover {
+.button:hover {
   background: var(--mainColorLight);
   transform: scale(1.05, 1);
 }
+.button:disabled {
+  cursor: not-allowed;
+  background: var(--mainColorLight);
+}
+.button:disabled:hover {
+  transform: none;
+}
 
 @media only screen and (min-width: 768px) {
-    #car-plan{
-        flex-direction: row;
-    }
-    #car-plan .sel{
-        display: inline-block;
-        width: 50%;
-        margin: 0;
-    }
-    #car-plan .sel select{
-      width: auto;
-    }
+  #car-plan {
+    flex-direction: row;
+  }
+  #car-plan .sel {
+    display: inline-block;
+    width: 50%;
+    margin: 0;
+  }
+  #car-plan .sel select {
+    width: auto;
+  }
 }
