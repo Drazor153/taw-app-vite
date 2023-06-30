@@ -8,6 +8,7 @@ const useAuth = () => {
 
 function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
+  const [dataUser, setDataUser] = useState({});
 
   const authAPI = async (data) => {
     if (!data.rut || !data.password) {
@@ -39,10 +40,11 @@ function AuthProvider({ children }) {
     const token_temp = await authAPI(data);
     if (token_temp.logeo === 1) {
       const data = JSON.parse(token_temp.data);
-      for (const key in data) {
-        localStorage.setItem(`${key}`, `${data[key]}`);
-      }
-      localStorage.setItem("SESSION_KEY", token_temp.key);
+      setDataUser(data);
+      // for (const key in data) {
+      //   localStorage.setItem(`${key}`, `${data[key]}`);
+      // }
+      // localStorage.setItem("SESSION_KEY", token_temp.key);
       setToken(token_temp);
       return { success: 1 };
     } else {
@@ -59,6 +61,7 @@ function AuthProvider({ children }) {
     token,
     onLogin: handleLogin,
     onLogout: handleLogout,
+    dataUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

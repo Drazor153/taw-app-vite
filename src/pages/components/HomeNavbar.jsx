@@ -1,10 +1,24 @@
 import { NavLink, Outlet, Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import { useAuth } from "../../AuthProvider";
-import { AiOutlineClose , AiOutlineMenu} from "react-icons/ai";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 
 export default function HomeNavbar() {
-  const { onLogout } = useAuth();
+  const { onLogout, dataUser } = useAuth();
+  const nombre = dataUser.nombre;
+  let cargo;
+  switch (dataUser.cargo_adm) {
+    case "da":
+      cargo = "Director de Área";
+      break;
+    case "jc":
+      cargo = "Jefe de Carrera";
+      break;
+    default:
+      cargo = "Docente";
+      break;
+  }
+
   const navLinks = [
     { to: "/home_user", text: "Home" },
     { to: "/home_user/asignacion", text: "Asignacion" },
@@ -45,7 +59,7 @@ export default function HomeNavbar() {
             // onBlur={() => setSubMenu(false)}
             className={boxClassSubMenu.join(" ")}
           >
-            <Link to="#">Cuenta</Link>
+            <Link to="#">{`${nombre} (${cargo})`}</Link>
             <NavLink to={"/home_user/account"}>Perfil</NavLink>
             <Link
               onClick={() => {
@@ -61,7 +75,7 @@ export default function HomeNavbar() {
           </button>
         </nav>
         <button className="nav-btn" onClick={showNavbar}>
-          <AiOutlineMenu/>
+          <AiOutlineMenu />
         </button>
       </header>
       <Outlet />

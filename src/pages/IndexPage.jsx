@@ -12,22 +12,7 @@ export function HomePage() {
 
   return (
     <div className="flex-row">
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
-      <div>Col 111111111111</div>
+      <h2>Cargando...</h2>
     </div>
   );
 }

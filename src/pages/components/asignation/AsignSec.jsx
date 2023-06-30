@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import DocenteCompt from "./DocenteComp";
 import { asignContext } from "../../../AuthProvider";
 
-export default function AsignSec({ ramosExt, reload }) {
+export default function AsignSec({ ramosExt, reload , numSemestres}) {
   // Objeto para DnD
   const columnsData = {
     listaRamos: {
@@ -159,7 +159,7 @@ export default function AsignSec({ ramosExt, reload }) {
     <asignContext.Provider value={funcs}>
       <div id="asignacionP">
         <DragDropContext onDragEnd={handleDragEnd}>
-          <RamosContainer listaRamos={ramosNav.listaRamos.ramos} />
+          <RamosContainer listaRamos={ramosNav.listaRamos.ramos} numSemestres={numSemestres} />
           <div className="btnDiv">
             <button className="button" onClick={submitAsignacion} disabled={asignDisabled}>
               Enviar asignación

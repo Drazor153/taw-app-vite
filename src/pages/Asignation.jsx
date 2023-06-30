@@ -20,6 +20,7 @@ export default function Asignation() {
 
   // Malla de la carrera y plan escogidos
   const [malla, setMalla] = useState([]);
+  const [numSemestres, setNumSemestres] = useState(0);
 
   const handleInfo = async () => {
     setShowMalla(false);
@@ -35,6 +36,11 @@ export default function Asignation() {
       );
       if (response.ok) {
         const data = await response.json();
+        const totalSemestres = data.reduce(
+          (max, obj) => (obj.numSemestre > max ? obj.numSemestre : max),
+          data[0].numSemestre
+        );
+        setNumSemestres(totalSemestres);
         setMalla(data);
         setShowMalla(true);
       }
@@ -51,7 +57,7 @@ export default function Asignation() {
         setPlanExt={updPlan}
         actionInfo={handleInfo}
       />
-      {showMalla && <AsignSec ramosExt={malla} reload={handleInfo}/>}
+      {showMalla && <AsignSec ramosExt={malla} reload={handleInfo} numSemestres={numSemestres}/>}
       
     </div>
   );

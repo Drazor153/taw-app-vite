@@ -4,8 +4,12 @@ import { useEffect } from "react";
 
 // Componente que agrupa los selectos de SELECCIONAR CARRERA y SELECCIONAR PLAN
 // Se deben pasar como props las funciones set de cada apartado
-export default function CarPlanComponent({ setCarreraExt, setPlanExt, actionInfo }) {
-  const { onLogout } = useAuth();
+export default function CarPlanComponent({
+  setCarreraExt,
+  setPlanExt,
+  actionInfo,
+}) {
+  const { onLogout, dataUser } = useAuth();
 
   const [carreras, setCarreras] = useState([]);
   const [planes, setPlanes] = useState([]);
@@ -15,9 +19,9 @@ export default function CarPlanComponent({ setCarreraExt, setPlanExt, actionInfo
       import.meta.env.VITE_API_URL +
         "carrera?" +
         new URLSearchParams({
-          rut: localStorage.getItem("rut"),
-          cargo_adm: localStorage.getItem("cargo_adm"),
-          key: localStorage.getItem("SESSION_KEY"),
+          rut: dataUser.rut,
+          cargo_adm: dataUser.cargo_adm,
+          // key: dataUser.SESSION_KEY,
         })
     )
       .then((response) => response.json())
@@ -55,7 +59,7 @@ export default function CarPlanComponent({ setCarreraExt, setPlanExt, actionInfo
         .nombre || "";
     setCarreraInt({
       value: codigo,
-      nombre
+      nombre,
     });
     setPlanInt(0);
     setPlanExt(0);
@@ -71,9 +75,9 @@ export default function CarPlanComponent({ setCarreraExt, setPlanExt, actionInfo
   };
 
   const planHandle = (e) => {
-    let plan = e.target.value;
+    let plan = parseInt(e.target.value);
+  
     setPlanInt(plan);
-
     setPlanExt(plan);
   };
 
@@ -92,7 +96,11 @@ export default function CarPlanComponent({ setCarreraExt, setPlanExt, actionInfo
         </div>
         <div className="sel">
           <label>Plan:</label>
-          <select value={planInt} onChange={planHandle} disabled={carreraInt.value <= 0}>
+          <select
+            value={planInt}
+            onChange={planHandle}
+            disabled={carreraInt.value <= 0}
+          >
             <option value={0}>Escoja el plan de la carrera</option>
             {planesSelector.planes.map((plan) => (
               <option key={plan.anio} value={plan.anio}>
@@ -119,10 +127,12 @@ function Info({ car, plan, action }) {
     <div className="infoCarPlan">
       <div className="text">
         Ha elegido: <br />
-        <b>{car}</b>, plan <b>{plan}</b>
+        <b>{`${car}, plan ${plan}`}</b>
       </div>
       <div className="btnDiv">
-        <button className="button" onClick={action}>Confirmar seleccion</button>
+        <button className="button" onClick={action}>
+          Confirmar seleccion
+        </button>
       </div>
     </div>
   );

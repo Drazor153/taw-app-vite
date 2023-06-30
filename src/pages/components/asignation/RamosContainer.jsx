@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 
-export default function RamosContainer({ listaRamos }) {
+export default function RamosContainer({ listaRamos, totalSemestres }) {
   const [filter, setFilter] = useState("");
   const [filterSemestre, setFilterSemestre] = useState(0);
 
-  const totalSemestres = listaRamos.reduce(
-    (max, obj) => (obj.numSemestre > max ? obj.numSemestre : max),
-    listaRamos[0].numSemestre
-  );
+  
 
   const opciones_semestre = [];
   for (let i = 1; i <= totalSemestres; i++) {
