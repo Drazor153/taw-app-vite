@@ -48,9 +48,9 @@ export default function LoginPage() {
   };
 
   const propRut = { onFocus: rutHandleFocus, onBlur: rutHandleBlur };
-  const inicio = new Date('March 6, 2023 08:00:00').getTime();
-  const min45 = 45*60*1000
-  console.log(new Date(inicio + min45));
+  // const inicio = new Date('March 6, 2023 08:00:00').getTime();
+  // const min45 = 45*60*1000
+  // console.log(new Date(inicio + min45));
   const handleSubmit = async (e) => {
     e.preventDefault();
     const rut = rutRef.current;

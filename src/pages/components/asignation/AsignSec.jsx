@@ -159,7 +159,7 @@ export default function AsignSec({ ramosExt, reload , numSemestres}) {
     <asignContext.Provider value={funcs}>
       <div id="asignacionP">
         <DragDropContext onDragEnd={handleDragEnd}>
-          <RamosContainer listaRamos={ramosNav.listaRamos.ramos} numSemestres={numSemestres} />
+          <RamosContainer listaRamos={ramosNav.listaRamos.ramos} totalSemestres={numSemestres} />
           <div className="btnDiv">
             <button className="button" onClick={submitAsignacion} disabled={asignDisabled}>
               Enviar asignación

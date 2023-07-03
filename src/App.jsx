@@ -6,11 +6,11 @@ import Malla from "./pages/Malla";
 import { HomeUser } from "./pages/HomeUser";
 import { HomePage } from "./pages/IndexPage";
 
-import "./styles/style.css";
 import "./styles/navbar.css";
 import "./styles/login.css";
 import "./styles/malla.css";
 import "./styles/carplan.css";
+
 import { AuthProvider, ProtectedRoute } from "./AuthProvider";
 
 const App = () => {

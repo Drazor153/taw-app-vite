@@ -47,8 +47,8 @@
   border: 1px solid black;
 }
 .horario .valido:hover {
-  background-color: var(--cellHover);
+  background: var(--cellHover);
 }
 .horario td:not(.valido) {
-  background-color: #fff;
+  background: none;
 }

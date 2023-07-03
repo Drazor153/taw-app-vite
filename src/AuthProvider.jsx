@@ -40,6 +40,7 @@ function AuthProvider({ children }) {
     const token_temp = await authAPI(data);
     if (token_temp.logeo === 1) {
       const data = JSON.parse(token_temp.data);
+      data.cargo_adm = data.cargo_adm === null ? 'DO': data.cargo_adm;
       setDataUser(data);
       // for (const key in data) {
       //   localStorage.setItem(`${key}`, `${data[key]}`);

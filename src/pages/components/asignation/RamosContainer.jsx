@@ -5,11 +5,9 @@ export default function RamosContainer({ listaRamos, totalSemestres }) {
   const [filter, setFilter] = useState("");
   const [filterSemestre, setFilterSemestre] = useState(0);
 
-  
-
   const opciones_semestre = [];
   for (let i = 1; i <= totalSemestres; i++) {
-    opciones_semestre.push(<option value={i}>{`Semestre ${i}`}</option>);
+    opciones_semestre.push(<option key={`sem-${i}`} value={i}>{`Semestre ${i}`}</option>);
   }
 
   return (

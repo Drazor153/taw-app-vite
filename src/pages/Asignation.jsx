@@ -4,7 +4,6 @@ import CarPlanComponent from "./components/CarPlanComponent";
 
 import "../styles/asignacion.css";
 
-
 export default function Asignation() {
   const [carreraSel, setCarreraSel] = useState(0);
   const updCar = (v) => {
@@ -50,15 +49,22 @@ export default function Asignation() {
   };
 
   return (
-    <div className="mallaP">
-      <h1>Seccion Malla Curricular</h1>
-      <CarPlanComponent
-        setCarreraExt={updCar}
-        setPlanExt={updPlan}
-        actionInfo={handleInfo}
-      />
-      {showMalla && <AsignSec ramosExt={malla} reload={handleInfo} numSemestres={numSemestres}/>}
-      
-    </div>
+    <section className="home">
+      <div className="mallaP">
+        <h1>Seccion Malla Curricular</h1>
+        <CarPlanComponent
+          setCarreraExt={updCar}
+          setPlanExt={updPlan}
+          actionInfo={handleInfo}
+        />
+        {showMalla && (
+          <AsignSec
+            ramosExt={malla}
+            reload={handleInfo}
+            numSemestres={numSemestres}
+          />
+        )}
+      </div>
+    </section>
   );
 }

@@ -1,6 +1,42 @@
 import { useContext, useEffect, useState } from "react";
 import { asignContext } from "../../../AuthProvider";
 
+// ====== Codigo para crear horas de los bloques ======
+const sumarMinutos = (date, minutos) => {
+  date.setMinutes(date.getMinutes() + minutos);
+};
+const obtHoraMin = (date) => {
+  let horas = date.getHours();
+  let minutos = date.getMinutes();
+  return `${horas}:${minutos < 10 ? `0${minutos}` : minutos}`;
+};
+
+const inicio_dia = new Date("March 5, 2023 08:00:00");
+const bloques_termino = [
+  { numBloque: 1, minDescanso: 10 },
+  { numBloque: 3, minDescanso: 10 },
+  { numBloque: 5, minDescanso: 105 },
+  { numBloque: 7, minDescanso: 5 },
+  { numBloque: 9, minDescanso: 5 },
+  { numBloque: 11, minDescanso: 5 },
+];
+const bloques_hora = [];
+
+for (let i = 0; i < 15; i++) {
+  const horaInicio = obtHoraMin(inicio_dia);
+  sumarMinutos(inicio_dia, 45);
+  const horaTermino = obtHoraMin(inicio_dia);
+  bloques_hora.push({ bloqueHora: true, horaInicio, horaTermino });
+
+  const bloque_termino = bloques_termino.find(
+    (bloque) => bloque.numBloque === i
+  );
+  if (bloque_termino !== undefined) {
+    sumarMinutos(inicio_dia, bloque_termino.minDescanso);
+  }
+}
+// ====== ====== ====== ====== ======
+
 export default function HorarioDispo() {
   const [horario, setHorario] = useState(null);
   const { resetBloques } = useContext(asignContext);
@@ -113,18 +149,17 @@ function UbiSelectors({ handler, resetHorario }) {
 }
 
 function HorarioSala({ data }) {
-  const n_bloques = [];
-  for (let i = 1; i <= data.bpd; i++) {
-    n_bloques.push(i);
+  const data_local = [];
+  for (let i = 0; i < data.asignaciones.length; i++) {
+    data_local.push([bloques_hora[i], ...data.asignaciones[i]]);
   }
 
-  const data_local = [...data.asignaciones];
-  // console.log(data_local);
   return (
     <div className="horario" id="horarioAsign">
       <table>
         <thead>
           <tr>
+            <th>Horas</th>
             <th>Lunes</th>
             <th>Martes</th>
             <th>Miercoles</th>
@@ -148,13 +183,13 @@ function FilaAsignaciones({ filaAsign, filaNum }) {
     <tr>
       {filaAsign.map((asign, i) => {
         const selected = arrayBloques.some(
-          (item) => item.dia === i + 1 && item.bloque === filaNum + 1
+          (item) => item.dia === i && item.bloque === filaNum + 1
         );
         return (
           <BloqueDispoSala
-            key={[filaNum, i]}
+            key={[filaNum, i - 1]}
             asignacion={asign}
-            k={[filaNum, i]}
+            k={[filaNum, i - 1]}
             selected={selected}
           />
         );
@@ -184,6 +219,9 @@ function BloqueDispoSala({ asignacion, k, selected }) {
         SIN ASIGNACION
       </td>
     );
+  }
+  if (asignacion.bloqueHora) {
+    return <td className="horaBloque">{`${asignacion.horaInicio} - ${asignacion.horaTermino}`}</td>;
   }
   k.push(asignacion.cod_ramo);
   return (

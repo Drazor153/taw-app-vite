@@ -1,83 +1,75 @@
+import { useRef } from "react";
 import { NavLink, Outlet, Link } from "react-router-dom";
-import { useRef, useState } from "react";
 import { useAuth } from "../../AuthProvider";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+
+const cargos = {
+  DA: "Director de Área",
+  JC: "Jefe de Carrera",
+  DO: 'Docente'
+};
+
+const navLinks = [
+  { bx: "bx-home-alt", to: "/home_user", text: "Home" },
+  { bx: "bx-edit-alt", to: "/home_user/asignacion", text: "Asignación" },
+  {
+    bx: "bxs-school",
+    to: "/home_user/horario",
+    text: "Mallas curriculares",
+  },
+];
 
 export default function HomeNavbar() {
   const { onLogout, dataUser } = useAuth();
-  const nombre = dataUser.nombre;
-  let cargo;
-  switch (dataUser.cargo_adm) {
-    case "da":
-      cargo = "Director de Área";
-      break;
-    case "jc":
-      cargo = "Jefe de Carrera";
-      break;
-    default:
-      cargo = "Docente";
-      break;
-  }
+  const sidebar = useRef();
 
-  const navLinks = [
-    { to: "/home_user", text: "Home" },
-    { to: "/home_user/asignacion", text: "Asignacion" },
-    { to: "/home_user/horario", text: "Mallas curriculares" },
-  ];
-  const navRef = useRef();
-
-  const showNavbar = () => {
-    navRef.current.classList.toggle("responsive_nav");
+  // Toggle click event
+  const toggleHandle = () => {
+    sidebar.current.classList.toggle("close");
   };
-  const hideNavbar = () => {
-    navRef.current.classList.remove("responsive_nav");
-  };
-
-  const [isSubMenu, setSubMenu] = useState(false);
-  const toggleSubMenu = () => {
-    setSubMenu(isSubMenu === false ? true : false);
-  };
-
-  let boxClassSubMenu = ["dropdown-btn "];
-
-  if (isSubMenu) {
-    boxClassSubMenu.push("dropdown-active");
-  }
 
   return (
     <>
-      <header>
-        <h3>Logo</h3>
-        <nav ref={navRef}>
-          {navLinks.map((el, i) => (
-            <NavLink key={i} to={el.to} end onClick={hideNavbar}>
-              {el.text}
-            </NavLink>
-          ))}
-          <div
-            onClick={toggleSubMenu}
-            // onBlur={() => setSubMenu(false)}
-            className={boxClassSubMenu.join(" ")}
-          >
-            <Link to="#">{`${nombre} (${cargo})`}</Link>
-            <NavLink to={"/home_user/account"}>Perfil</NavLink>
-            <Link
-              onClick={() => {
-                onLogout();
-              }}
-              to="#"
-            >
-              Log out
-            </Link>
+      <nav className="sidebar close" ref={sidebar}>
+        <header>
+          <div className="image-text">
+            <span className="image" onClick={toggleHandle}>
+              <img src="src/img/utalogo.jpg" alt="logo" />
+            </span>
+
+            <div className="text header-text">
+              <span className="name">{dataUser.nombre}</span>
+              <span className="profession">{cargos[dataUser.cargo_adm]}</span>
+            </div>
           </div>
-          <button className="nav-btn nav-close-btn" onClick={showNavbar}>
-            <AiOutlineClose />
-          </button>
-        </nav>
-        <button className="nav-btn" onClick={showNavbar}>
-          <AiOutlineMenu />
-        </button>
-      </header>
+          <i className="bx bx-chevron-right toggle" onClick={toggleHandle}></i>
+        </header>
+        <div className="menu-bar">
+          <div className="menu">
+            {/* <li className="search-box">
+              <i className="bx bx-search icon"></i>
+              <input type="search" placeholder="Search..." />
+            </li> */}
+            <ul className="menu-links">
+              {navLinks.map((navlink, i) => (
+                <li className="nav-link" key={i}>
+                  <NavLink key={i} to={navlink.to} end>
+                    <i className={`bx ${navlink.bx} icon`}></i>
+                    <span className="text nav-text">{navlink.text}</span>
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="bottom-content">
+            <li className="nav-link">
+              <Link href="#" onClick={() => onLogout()}>
+                <i className="bx bx-log-out icon"></i>
+                <span className="text nav-text">Cerrar sesión</span>
+              </Link>
+            </li>
+          </div>
+        </div>
+      </nav>
       <Outlet />
     </>
   );

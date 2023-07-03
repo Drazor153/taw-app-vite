@@ -11,6 +11,7 @@
 #ramosContainer {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .filtros{
   display: flex;
@@ -45,7 +46,7 @@
   display: flex;
   flex-direction: row;
   overflow-x: scroll;
-  min-height: 150px;
+  min-height: 175px;
   gap: 10px;
   margin: 1rem;
   padding: 1rem;
@@ -138,17 +139,24 @@
   min-width: 150px;
   width: 150px;
   height: 100px;
-  -webkit-user-select: none;
   user-select: none;
-  white-space: normal;
+  -webkit-user-select: none;
+  white-space: nowrap;
+  transition: background 0.1s ease;
 }
 #horarioAsign td:hover {
   cursor: pointer;
 }
+#horarioAsign td.horaBloque{
+  background-color: rgb(246, 222, 163);
+}
+#horarioAsign td.horaBloque:hover{
+  cursor: auto;
+}
 #horarioAsign .asignado {
   background-color: #dfdfdf;
 }
-#horarioAsign .bloque-seleccionado{
+#horarioAsign td.bloque-seleccionado{
   background-color: rgb(210, 135, 82);
 }
 
@@ -167,7 +175,7 @@
     width: 300px;
   }
   #horarioDispo{
-    width: 850px;
+    width: 1000px;
   }
   /* #ramosContainer {
     width: 25%;
@@ -184,7 +192,7 @@
 
 /* DocenteComp */
 #ramoElegido{
-  background-color: #dfdfdf;
+  background: #dfdfdf;
   height: 150px;
   display: grid;
   place-items: center;

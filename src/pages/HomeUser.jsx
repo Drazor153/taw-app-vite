@@ -1,3 +1,7 @@
 export function HomeUser() {
-  return <h1>Home user</h1>;
+  return (
+    <section className="home">
+      <h1>Home user</h1>
+    </section>
+  );
 }

@@ -37,14 +37,16 @@ export default function Malla() {
   };
 
   return (
-    <div className="mallaP">
-      <h1>Seccion Malla Curricular</h1>
-      <CarPlanComponent
-        setCarreraExt={updCar}
-        setPlanExt={updPlan}
-        actionInfo={handleInfo}
-      />
-      {showMalla && <MallaComponent ramos={malla} />}
-    </div>
+    <section className="home">
+      <div className="mallaP">
+        <h1>Seccion Malla Curricular</h1>
+        <CarPlanComponent
+          setCarreraExt={updCar}
+          setPlanExt={updPlan}
+          actionInfo={handleInfo}
+        />
+        {showMalla && <MallaComponent ramos={malla} />}
+      </div>
+    </section>
   );
 }
