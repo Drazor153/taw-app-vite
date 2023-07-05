@@ -49,6 +49,8 @@ body {
   color: var(--text-color);
   transition: var(--trans-03);
   white-space: nowrap;
+  overflow: hidden;
+
 }
 .sidebar.close .text{
   opacity: 0;

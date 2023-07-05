@@ -65,7 +65,7 @@ export default function LoginPage() {
     if (res.success) {
       modAlert("success", "Has iniciado sesion correctamente");
       // const origin = location.state?.from?.pathname || "/home_user";
-      navigate("/home_user");
+      navigate("/inicio");
     } else {
       modAlert("error", "Credenciales incorrectas");
     }

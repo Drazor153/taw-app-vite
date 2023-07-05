@@ -3,6 +3,8 @@ import LoginPage from "./pages/LoginPage";
 import HomeNavbar from "./pages/components/HomeNavbar";
 import Asignation from "./pages/Asignation";
 import Malla from "./pages/Malla";
+import HorarioDocente from "./pages/HorarioDocente";
+import HorarioDocDispo from "./pages/HorarioDocDispo";
 import { HomeUser } from "./pages/HomeUser";
 import { HomePage } from "./pages/IndexPage";
 
@@ -19,7 +21,7 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route
-          path="/home_user"
+          path="/inicio"
           element={
             <ProtectedRoute>
               <HomeNavbar />
@@ -28,7 +30,10 @@ const App = () => {
         >
           <Route index element={<HomeUser />} />
           <Route path="asignacion" element={<Asignation />} />
-          <Route path="horario" element={<Malla />} />
+          <Route path="malla-curricular" element={<Malla />} />
+          <Route path="horario-docente" element={<HorarioDocente />} />
+          <Route path="horario-disponible" element={<HorarioDocDispo />} />
+
           <Route path="*" element={<HomeUser />} />
         </Route>
         <Route path="/*" element={<HomePage />} />

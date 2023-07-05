@@ -5,16 +5,26 @@ import { useAuth } from "../../AuthProvider";
 const cargos = {
   DA: "Director de Área",
   JC: "Jefe de Carrera",
-  DO: 'Docente'
+  DO: "Docente",
 };
 
 const navLinks = [
-  { bx: "bx-home-alt", to: "/home_user", text: "Home" },
-  { bx: "bx-edit-alt", to: "/home_user/asignacion", text: "Asignación" },
+  { bx: "bx-home-alt", to: "/inicio", text: "Home" },
+  { bx: "bx-edit-alt", to: "/inicio/asignacion", text: "Asignación" },
   {
     bx: "bxs-school",
-    to: "/home_user/horario",
+    to: "/inicio/malla-curricular",
     text: "Mallas curriculares",
+  },
+  {
+    bx: "bx-chalkboard",
+    to: "/inicio/horario-docente",
+    text: "Horario Docente",
+  },
+  {
+    bx: "bxs-school",
+    to: "/inicio/horario-disponible",
+    text: "Disponibilidad",
   },
 ];
 

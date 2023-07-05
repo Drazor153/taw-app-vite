@@ -1,0 +1,23 @@
+#horario-docente{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.selector-docente, .div-horario{
+    margin: auto;
+}
+.selector-docente{
+    display: flex;
+    flex-direction: column;
+}
+#horario-docente .horario{
+    width: 100%;
+}
+#horario-docente td{
+    user-select: auto;
+    /* white-space: normal; */
+}
+#horario-docente td:hover{
+    cursor: auto;
+}
