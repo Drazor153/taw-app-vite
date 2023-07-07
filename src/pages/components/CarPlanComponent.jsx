@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useAuth } from "../../AuthProvider";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../AuthProvider";
 import { useEffect } from "react";
 
 // Componente que agrupa los selectos de SELECCIONAR CARRERA y SELECCIONAR PLAN
@@ -9,7 +9,7 @@ export default function CarPlanComponent({
   setPlanExt,
   actionInfo,
 }) {
-  const { onLogout, dataUser } = useAuth();
+  const { onLogout, dataUser } = useContext(AuthContext);
 
   const [carreras, setCarreras] = useState([]);
   const [planes, setPlanes] = useState([]);

@@ -6,6 +6,27 @@
   box-sizing: border-box;
   font-family: "Titillium Web", sans-serif;
 }
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 
 :root {
   --mainColor: #29335c;
@@ -50,13 +71,12 @@ body {
   transition: var(--trans-03);
   white-space: nowrap;
   overflow: hidden;
-
 }
-.sidebar.close .text{
+.sidebar.close .text {
   opacity: 0;
   visibility: hidden;
 }
-.sidebar a .text{
+.sidebar a .text {
   user-select: none;
 }
 
@@ -149,7 +169,7 @@ header .image-text .header-text {
   font-size: 22px;
   transition: var(--trans-03);
 }
-.sidebar.close header .toggle{
+.sidebar.close header .toggle {
   transform: translateY(-50%);
 }
 .sidebar .search-box {
@@ -183,7 +203,7 @@ header .image-text .header-text {
   color: var(--sidebar-color);
 }
 
-.sidebar .menu-bar{
+.sidebar .menu-bar {
   height: 100%;
   height: calc(100% - 50px);
   display: flex;
@@ -191,7 +211,7 @@ header .image-text .header-text {
   justify-content: space-between;
 }
 
-.home{
+.home {
   position: relative;
   left: 250px;
   height: 100vh;
@@ -199,8 +219,7 @@ header .image-text .header-text {
   background: var(--body-color);
   transition: var(--trans-05);
 }
-.sidebar.close ~ .home{
+.sidebar.close ~ .home {
   left: 88px;
   width: calc(100% - 88px);
-
 }

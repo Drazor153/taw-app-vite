@@ -38,7 +38,7 @@ export default function RamosContainer({ listaRamos, totalSemestres }) {
             {listaRamos.map((ramo, i) => {
               // console.log(filterSemestre)
               if (ramo.noRes) {
-                return <div key={0}>No se han encontrado coincidencias</div>;
+                return <div key='none'>No se han encontrado coincidencias</div>;
               }
               if (filterSemestre != 0 && ramo.numSemestre !== filterSemestre) {
                 return;

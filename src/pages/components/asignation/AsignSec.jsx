@@ -4,8 +4,9 @@ import { DragDropContext } from "react-beautiful-dnd";
 import { useEffect, useState, useRef } from "react";
 import DocenteCompt from "./DocenteComp";
 import { asignContext } from "../../../AuthProvider";
+import { getHorarioDocDispo } from "../../../api/horarioDocDispoApi";
 
-export default function AsignSec({ ramosExt, reload , numSemestres}) {
+export default function AsignSec({ ramosExt, reload, numSemestres }) {
   // Objeto para DnD
   const columnsData = {
     listaRamos: {
@@ -21,8 +22,17 @@ export default function AsignSec({ ramosExt, reload , numSemestres}) {
 
   // Estados para guardar datos para crear Asignación
   const [docente, setDocente] = useState(0);
+  const [disponibleDoc, setDisponibleDoc] = useState([]);
   const [bloques, setBloques] = useState([]);
+
+  const [limite, setLimite] = useState(false);
   const sala = useRef();
+
+  const cambioDocente = async (rut) => {
+    const matriz = await getHorarioDocDispo(rut);
+    setDocente(rut);
+    setDisponibleDoc(matriz.asignaciones);
+  };
 
   const [asignDisabled, setAsignDisabled] = useState(true);
   const exists = (obj) => {
@@ -33,6 +43,9 @@ export default function AsignSec({ ramosExt, reload , numSemestres}) {
 
   const addBloque = (bloque) => {
     if (ramoElegido === undefined) return false;
+
+    setLimite(false);
+
     const index = exists(bloque);
     if (index >= 0) {
       const lista = [...bloques];
@@ -41,21 +54,20 @@ export default function AsignSec({ ramosExt, reload , numSemestres}) {
       return false;
     }
     if (bloques.length >= ramoElegido.maxBloques - ramoElegido.conteo) {
+      setLimite(true);
       return false;
     }
-    setBloques([...bloques, bloque]);
+    const lista = [...bloques, bloque];
+    setBloques(lista);
+    if (lista.length >= ramoElegido.maxBloques - ramoElegido.conteo) {
+      setLimite(true);
+    }
     return true;
   };
   const resetBloques = () => {
     setBloques([]);
   };
 
-  const funcs = {
-    addBloque,
-    resetBloques,
-    arrayBloques: bloques,
-    salaRef: sala,
-  };
   useEffect(() => {
     if (ramoElegido === undefined || docente <= 1000000 || bloques.length < 1) {
       setAsignDisabled(true);
@@ -65,7 +77,6 @@ export default function AsignSec({ ramosExt, reload , numSemestres}) {
   }, [ramoElegido, docente, bloques]);
 
   const submitAsignacion = async () => {
-    console.log('s');
     if (ramoElegido === undefined || docente <= 1000000 || bloques.length < 1) {
       return;
     }
@@ -94,7 +105,6 @@ export default function AsignSec({ ramosExt, reload , numSemestres}) {
     } catch (error) {
       console.error(error);
     }
-    console.log(asignacion);
   };
 
   const handleDragEnd = (result) => {
@@ -153,15 +163,42 @@ export default function AsignSec({ ramosExt, reload , numSemestres}) {
 
     setDocente(0);
     setBloques([]);
+    setDisponibleDoc([]);
+
+    fetch(
+      `${import.meta.env.VITE_API_URL}asignaciones-ramo?` +
+        new URLSearchParams({
+          codRamo: ramoEscogido.codigo,
+        })
+    )
+      .then((response) => response.json())
+      .then((ramo) => {
+        setLimite(ramo.conteo >= ramo.max_bloques);
+      });
+  };
+  const dataProvider = {
+    addBloque,
+    resetBloques,
+    arrayBloques: bloques,
+    salaRef: sala,
+    disponibleDoc,
+    limite,
   };
 
   return (
-    <asignContext.Provider value={funcs}>
+    <asignContext.Provider value={dataProvider}>
       <div id="asignacionP">
         <DragDropContext onDragEnd={handleDragEnd}>
-          <RamosContainer listaRamos={ramosNav.listaRamos.ramos} totalSemestres={numSemestres} />
+          <RamosContainer
+            listaRamos={ramosNav.listaRamos.ramos}
+            totalSemestres={numSemestres}
+          />
           <div className="btnDiv">
-            <button className="button" onClick={submitAsignacion} disabled={asignDisabled}>
+            <button
+              className="button"
+              onClick={submitAsignacion}
+              disabled={asignDisabled}
+            >
               Enviar asignación
             </button>
           </div>
@@ -170,7 +207,7 @@ export default function AsignSec({ ramosExt, reload , numSemestres}) {
               ramoElegido={ramosNav.ramoElegido}
               docenteArray={docenteArray}
               docenteSelected={docente}
-              setDocente={setDocente}
+              setDocente={cambioDocente}
             />
             <HorarioDispo setBloques={setBloques} />
           </div>

@@ -1,10 +1,44 @@
 import { createContext, useState, useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
-const AuthContext = createContext(null);
-const useAuth = () => {
-  return useContext(AuthContext);
+// ====== Codigo para crear horas de los bloques ======
+const sumarMinutos = (date, minutos) => {
+  date.setMinutes(date.getMinutes() + minutos);
 };
+const obtHoraMin = (date) => {
+  let horas = date.getHours();
+  let minutos = date.getMinutes();
+  return `${horas}:${minutos < 10 ? `0${minutos}` : minutos}`;
+};
+
+const inicio_dia = new Date("March 5, 2023 08:00:00");
+const bloques_termino = [
+  { numBloque: 1, minDescanso: 10 },
+  { numBloque: 3, minDescanso: 10 },
+  { numBloque: 5, minDescanso: 115 },
+  { numBloque: 7, minDescanso: 5 },
+  { numBloque: 9, minDescanso: 5 },
+  { numBloque: 11, minDescanso: 5 },
+];
+const bloques_hora = [];
+
+for (let i = 0; i < 15; i++) {
+  const horaInicio = obtHoraMin(inicio_dia);
+  sumarMinutos(inicio_dia, 45);
+  const horaTermino = obtHoraMin(inicio_dia);
+  bloques_hora.push({bloquesString: `${i+1}`, bloqueHora: true, horaInicio, horaTermino });
+
+  const bloque_termino = bloques_termino.find(
+    (bloque) => bloque.numBloque === i
+  );
+  if (bloque_termino !== undefined) {
+    sumarMinutos(inicio_dia, bloque_termino.minDescanso);
+  }
+}
+// ====== ====== ====== ====== ======
+
+
+const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
@@ -69,7 +103,7 @@ function AuthProvider({ children }) {
 }
 
 function ProtectedRoute({ children }) {
-  const { token } = useAuth();
+  const { token } = useContext(AuthContext);
   const location = useLocation();
   if (!token) {
     return <Navigate replace to="/login" state={{ from: location }} />;
@@ -79,4 +113,4 @@ function ProtectedRoute({ children }) {
 
 const asignContext = createContext(null);
 
-export { useAuth, AuthProvider, ProtectedRoute, asignContext };
+export { AuthContext, AuthProvider, ProtectedRoute, asignContext, bloques_hora };

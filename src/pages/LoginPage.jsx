@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { useAuth } from "../AuthProvider";
+import { useContext, useRef, useState } from "react";
+import { AuthContext } from "../AuthProvider";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 // import logo from "../img/utalogo.jpg";
 
@@ -28,7 +28,7 @@ export default function LoginPage() {
   const rutRef = useRef(null);
   const [rut, setRut] = useState("");
   const passRef = useRef(null);
-  const { onLogin } = useAuth();
+  const { onLogin } = useContext(AuthContext);
   const [alert, setAlert] = useState(<></>);
 
   const modAlert = (tipo, text) => {
@@ -48,9 +48,7 @@ export default function LoginPage() {
   };
 
   const propRut = { onFocus: rutHandleFocus, onBlur: rutHandleBlur };
-  // const inicio = new Date('March 6, 2023 08:00:00').getTime();
-  // const min45 = 45*60*1000
-  // console.log(new Date(inicio + min45));
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const rut = rutRef.current;

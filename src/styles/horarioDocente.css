@@ -10,6 +10,10 @@
 .selector-docente{
     display: flex;
     flex-direction: column;
+    flex: 1;
+}
+.div-horario{
+    flex: 3;
 }
 #horario-docente .horario{
     width: 100%;

@@ -1,0 +1,94 @@
+#horario-dispo {
+  display: flex;
+  height: 100%;
+}
+.submit-sec,
+.horario-in {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.submit-sec {
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+}
+.submit-sec .listas-div {
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+}
+.submit-sec .listas-div .bloques-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+.submit-sec .listas-div ul {
+  text-align: center;
+  list-style: none;
+}
+.submit-sec .listas-div ul li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 150px;
+  border: 1px solid black;
+  border-radius: 15px;
+  animation: animacionLi 0.3s ease;
+}
+.listas-div .agregados-div li {
+  background: #b8efb8;
+}
+.listas-div .eliminados-div li {
+  background: #f5b2b2;
+}
+
+@keyframes animacionLi {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.submit-sec .listas-div ul li:not(:last-child) {
+  margin-bottom: 10px;
+}
+.submit-sec .agregados-div,
+.submit-sec .eliminados-div {
+  width: 250px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+.submit-sec .agregados-div::-webkit-scrollbar-thumb,
+.submit-sec .eliminados-div::-webkit-scrollbar-thumb {
+  background: #dbdbdb;
+}
+
+.submit-sec .submit-div {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.horario-in {
+  flex: 3;
+}
+
+.horario-in .horario {
+  max-height: 90%;
+}
+.horario-in .horario .no-usado {
+  background: white;
+}
+.horario-in .horario .eliminar {
+  background: #ff8282;
+}
+.horario-in .horario .agregar {
+  background: #57aa57;
+}

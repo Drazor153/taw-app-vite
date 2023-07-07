@@ -13,7 +13,7 @@
   flex-direction: column;
   width: 100%;
 }
-.filtros{
+.filtros {
   display: flex;
   justify-content: space-evenly;
 }
@@ -27,7 +27,7 @@
   margin-top: 15px;
   align-self: center;
 }
-.filter-semestre{
+.filter-semestre {
   width: 250px;
   height: 30px;
   font-size: 16px;
@@ -36,7 +36,7 @@
   margin-top: 15px;
   align-self: center;
 }
-.filter-semestre:hover{
+.filter-semestre:hover {
   cursor: pointer;
 }
 
@@ -95,7 +95,7 @@
   background-color: var(--cellHover);
   transform: scale(1.1, 1);
 }
-.asignP1{
+.asignP1 {
   display: flex;
   justify-content: space-evenly;
 }
@@ -132,6 +132,7 @@
 
 /* CSS Horario */
 #horarioAsign table {
+  table-layout: fixed;
   padding: 0;
 }
 #horarioAsign td {
@@ -147,17 +148,32 @@
 #horarioAsign td:hover {
   cursor: pointer;
 }
-#horarioAsign td.horaBloque{
+#horarioAsign td.horaBloque {
+  min-width: 0;
+  max-width: 90px;
   background-color: rgb(246, 222, 163);
 }
-#horarioAsign td.horaBloque:hover{
+#horarioAsign td.horaBloque:hover {
   cursor: auto;
 }
 #horarioAsign .asignado {
   background-color: #dfdfdf;
 }
-#horarioAsign td.bloque-seleccionado{
+#horarioAsign td.bloque-disponible {
+  background-color: aqua;
+}
+#horarioAsign td.bloque-disponible:hover{
+  background-color: rgb(0, 183, 183);
+}
+#horarioAsign td.bloque-seleccionado {
   background-color: rgb(210, 135, 82);
+}
+#horarioAsign td.bloque-seleccionado:hover {
+  background-color: rgb(157, 101, 61);
+}
+
+#horarioAsign td.limite{
+  pointer-events: none;
 }
 
 /* Media query para pantallas con width mayor a 992px */
@@ -165,16 +181,16 @@
   .ramoAsi {
     width: 180px;
   }
-  #ramosContainer{
+  #ramosContainer {
     width: 95%;
   }
-  .asignP1{
+  .asignP1 {
     width: 95%;
   }
-  #docenteComp{
+  #docenteComp {
     width: 300px;
   }
-  #horarioDispo{
+  #horarioDispo {
     width: 1000px;
   }
   /* #ramosContainer {
@@ -191,29 +207,29 @@
 } */
 
 /* DocenteComp */
-#ramoElegido{
+#ramoElegido {
   background: #dfdfdf;
   height: 150px;
   display: grid;
   place-items: center;
   border-radius: 20px;
 }
-.docente-list{
+.docente-list {
   display: flex;
   flex-direction: column;
   padding: 1rem;
   gap: 10px;
 }
-.docente-item{
+.docente-item {
   background-color: var(--docenteBg);
   padding: 1rem;
   border-radius: 15px;
   border: 1px solid black;
 }
-.docente-item:hover{
+.docente-item:hover {
   /* background-color: var(--docenteHover); */
   cursor: pointer;
 }
-.docente-selected{
+.docente-selected {
   background-color: var(--docenteActive);
 }

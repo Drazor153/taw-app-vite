@@ -1,6 +1,6 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { NavLink, Outlet, Link } from "react-router-dom";
-import { useAuth } from "../../AuthProvider";
+import { AuthContext } from "../../AuthProvider";
 
 const cargos = {
   DA: "Director de Área",
@@ -8,9 +8,20 @@ const cargos = {
   DO: "Docente",
 };
 
-const navLinks = [
+const navLinksGen = [
   { bx: "bx-home-alt", to: "/inicio", text: "Home" },
-  { bx: "bx-edit-alt", to: "/inicio/asignacion", text: "Asignación" },
+  {
+    bx: "bxs-school",
+    to: "/inicio/horario-disponible",
+    text: "Disponibilidad",
+  },
+];
+const navLinksAdm = [
+  {
+    bx: "bx-edit-alt",
+    to: "/inicio/asignacion",
+    text: "Asignación",
+  },
   {
     bx: "bxs-school",
     to: "/inicio/malla-curricular",
@@ -21,25 +32,28 @@ const navLinks = [
     to: "/inicio/horario-docente",
     text: "Horario Docente",
   },
-  {
-    bx: "bxs-school",
-    to: "/inicio/horario-disponible",
-    text: "Disponibilidad",
-  },
 ];
 
 export default function HomeNavbar() {
-  const { onLogout, dataUser } = useAuth();
+  const { onLogout, dataUser } = useContext(AuthContext);
   const sidebar = useRef();
 
   // Toggle click event
   const toggleHandle = () => {
     sidebar.current.classList.toggle("close");
   };
+  const linksAdmArray = navLinksAdm.map((navlink, i) => (
+    <li className="nav-link" key={i}>
+      <NavLink key={i} to={navlink.to} end>
+        <i className={`bx ${navlink.bx} icon`}></i>
+        <span className="text nav-text">{navlink.text}</span>
+      </NavLink>
+    </li>
+  ));
 
   return (
     <>
-      <nav className="sidebar close" ref={sidebar}>
+      <nav className="sidebar" ref={sidebar}>
         <header>
           <div className="image-text">
             <span className="image" onClick={toggleHandle}>
@@ -60,7 +74,7 @@ export default function HomeNavbar() {
               <input type="search" placeholder="Search..." />
             </li> */}
             <ul className="menu-links">
-              {navLinks.map((navlink, i) => (
+              {navLinksGen.map((navlink, i) => (
                 <li className="nav-link" key={i}>
                   <NavLink key={i} to={navlink.to} end>
                     <i className={`bx ${navlink.bx} icon`}></i>
@@ -68,6 +82,7 @@ export default function HomeNavbar() {
                   </NavLink>
                 </li>
               ))}
+              {(['JC', 'DA'].includes(dataUser.cargo_adm) && linksAdmArray)}
             </ul>
           </div>
           <div className="bottom-content">
